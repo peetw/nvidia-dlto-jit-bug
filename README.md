@@ -20,6 +20,55 @@ fatbinary (e.g. `sm_70` or `sm_86`), the driver (e.g. 516.59) would JIT compile/
 and it would run fine. However, after upgrading to the 526.67 driver, the application fails with a
 "device kernel image is invalid" CUDA error.
 
+Fatbinary contents:
+
+```
+$ cuobjdump -all nvidia-dlto-jit-bug.exe
+
+Fatbin elf code:
+================
+arch = sm_52
+code version = [1,7]
+host = windows
+compile_size = 64bit
+identifier = lto
+
+Fatbin elf code:
+================
+arch = sm_61
+code version = [1,7]
+host = windows
+compile_size = 64bit
+identifier = lto
+
+Fatbin ptx code:
+================
+arch = sm_52
+code version = [7,7]
+host = windows
+compile_size = 64bit
+compressed
+ptxasOptions = --compile-only
+
+Fatbin nvvm code:
+=================
+arch = sm_52
+code version = [1,54]
+host = windows
+compile_size = 64bit
+compressed
+nvvmOptions = -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1
+
+Fatbin nvvm code:
+=================
+arch = sm_61
+code version = [1,54]
+host = windows
+compile_size = 64bit
+compressed
+nvvmOptions = -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1
+```
+
 ## Requirements
 
 * Windows 10 (or later)
@@ -32,10 +81,6 @@ and it would run fine. However, after upgrading to the 526.67 driver, the applic
 ## Build
 
 Build the VS solution in Release mode.
-
-## Run
-
-Usage: `nvidia-dlto-jit-bug.exe`
 
 ## Reproduce Issue
 
